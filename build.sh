@@ -11,6 +11,8 @@ docker rm -f build
 
 rm -f repo/*.old
 
+cp -r public/. repo
+
 git -C repo init
 git -C repo config --local user.email "action@github.com"
 git -C repo config --local user.name "GitHub Actions"
