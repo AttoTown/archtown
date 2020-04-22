@@ -28,8 +28,9 @@ repo-add -R -p "${REPO_DIR}/archtown.db.tar.gz" "${REPO_DIR}"/*.pkg.*
 
 echo '=== Building Index ==='
 cd "${REPO_DIR}"
-echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Index of ArchTown</title></head><body><h1>Index</h1><ul>' > index.html
+echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Index of ArchTown</title></head><body><h1>Index</h1><ul>' > /tmp/index.html
 for i in *; do
-  echo "<li><a href=\"$i\">$i</a></li>" >> index.html
+  echo "<li><a href=\"$i\">$i</a></li>" >> /tmp/index.html
 done
-echo '</ul></body></html>'
+echo '</ul></body></html>' >> /tmp/index.html
+mv /tmp/index.html index.html
