@@ -1,8 +1,10 @@
 #!/bin/bash
 set -xe
 
+BUILD_ARCH=$(uname -m)
+
 useradd build
-mkdir -p /build/packages /build/srcpackages /build/repo /home/build /build/aursrc
+mkdir -p /build/packages /build/srcpackages /build/meta /build/repo /home/build /build/aursrc
 chown -R build:build /build  /home/build/
 
 echo 'PACKAGER="oott123 <archlinux-repo@public.oott123.com>"' >> /etc/makepkg.conf
@@ -19,5 +21,7 @@ for pkgName in "${BUILD_AUR_PACKAGES[@]}"; do
 done
 
 echo '=== Building Repo ==='
-repo-add -R -p /build/repo/archtown.db.tar.gz /build/packages/*
-mv /build/packages/* /build/repo
+REPO_DIR="/build/repo/${BUILD_ARCH}"
+mkdir -p "${REPO_DIR}"
+mv /build/packages/* "${REPO_DIR}"
+repo-add -R -p "${REPO_DIR}/archtown.db.tar.gz" "${REPO_DIR}"/*.pkg.*
