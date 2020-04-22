@@ -13,6 +13,6 @@ rm -f repo/*.old
 
 git -C repo init
 git -C repo config --local user.email "action@github.com"
-git -C repo config --local user.name "GitHub Action"
+git -C repo config --local user.name "GitHub Actions"
 git -C repo add .
 git -C repo commit -m "Automatically Build at ${BUILD_DATE}"
