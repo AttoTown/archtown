@@ -1,0 +1,4 @@
+BUILD_AUR_PACKAGES=(
+  'yay'
+  'systemd-docker'
+)

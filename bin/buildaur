@@ -1,0 +1,31 @@
+#!/bin/bash
+set -xe
+
+BUILD_DIR=${BUILD_DIR:-"/build/aursrc"}
+BUILD_USER=${BUILD_USER:-"build"}
+AUR_SRC=${AUR_SRC:-"https://aur.archlinux.org"}
+
+aurPackageName="$1"
+pkgDir="${BUILD_DIR}/${aurPackageName}"
+pkgSrc="${AUR_SRC}/${aurPackageName}.git"
+
+mkdir -p "${BUILD_DIR}"
+
+if [ -e "aur/${aurPackageName}/beforeClone" ]; then
+  . "aur/${aurPackageName}/beforeClone"
+fi
+
+sudo -HE -u "${BUILD_USER}" git clone "${pkgSrc}" "${pkgDir}"
+source "${pkgDir}/PKGBUILD"
+pacman -S --noconfirm --needed --asdeps "${makedepends[@]}" "${depends[@]}"
+cd "${pkgDir}"
+
+if [ -e "aur/${aurPackageName}/beforeMakepkg" ]; then
+  . "aur/${aurPackageName}/beforeMakepkg"
+fi
+
+sudo -HE -u "${BUILD_USER}" makepkg
+
+if [ -e "aur/${aurPackageName}/afterMakepkg" ]; then
+  . "aur/${aurPackageName}/afterMakepkg"
+fi
